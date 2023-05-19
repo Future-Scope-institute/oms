@@ -1448,7 +1448,7 @@ const Welcome = () => {
           <div className="container-fluid h-custom">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <Form>
+                <Form onSubmit={submitForm}>
                   <p style={{ textAlign: "left" }}>Mobile Number</p>
                   <InputGroup>
                     <InputGroupText>+91</InputGroupText>
@@ -1457,6 +1457,7 @@ const Welcome = () => {
                       id="mobile-no"
                       name="mobile-no"
                       placeholder="Enter 10 digit Mobile Number"
+                      required
                     />
                   </InputGroup>
                   <FormGroup>
@@ -1466,6 +1467,7 @@ const Welcome = () => {
                       id="full-name"
                       name="full-name"
                       placeholder="Your Name"
+                      required
                     />
                   </FormGroup>
                   <FormGroup>
@@ -1475,9 +1477,10 @@ const Welcome = () => {
                       id="email"
                       name="email"
                       placeholder="e.g. yourname@gmail.com"
+                      required
                     />
                   </FormGroup>
-                  <Button className="w-100" color="success">
+                  <Button className="w-100" type="submit" color="success">
                     Submit&nbsp;<i className="fa-solid fa-paper-plane"></i>
                   </Button>
                 </Form>
