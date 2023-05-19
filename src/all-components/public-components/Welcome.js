@@ -58,6 +58,7 @@ import CSS from "../../images/css.webp";
 import Django from "../../images/django.webp";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
+import { toast } from "react-toastify";
 const Welcome = () => {
   const [open, setOpen] = useState("");
   const toggle = (id) => {
@@ -67,6 +68,10 @@ const Welcome = () => {
       setOpen(id);
     }
   };
+
+  function submitForm(){
+    toast.success("Submited..Our Team Contact Soon..");
+  }
   return (
     <div>
       <WelcomeNavigation
@@ -172,7 +177,7 @@ const Welcome = () => {
                         placeholder="e.g. yourname@gmail.com"
                       />
                     </FormGroup>
-                    <Button className="w-100" color="success">
+                    <Button className="w-100" onClick={submitForm} color="success">
                       Submit&nbsp;<i className="fa-solid fa-paper-plane"></i>
                     </Button>
                   </Form>
