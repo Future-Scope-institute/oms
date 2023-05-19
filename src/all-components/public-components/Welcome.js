@@ -135,9 +135,11 @@ const Welcome = () => {
                 <i className="fa-sharp fa-solid fa-rectangle-list"></i>
               </Button>
               &nbsp;
-              <Button color="warning" className="my-2">
+             <Link to="https://www.youtube.com/watch?v=od4hT9abIMQ" className="text-decoration-none">
+             <Button color="warning" className="my-2">
                 Course Intro&nbsp;<i className="fa-solid fa-video"></i>
               </Button>
+             </Link>
             </Container>
           </div>
           <br />
