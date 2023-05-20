@@ -8,14 +8,28 @@
   display: flex;
   flex-wrap: wrap;
 }
+.faq-main {
+  display: flex;
+  flex-wrap: wrap;
+}
+.abt-main {
+  display: flex;
+  flex-wrap: wrap;
+}
+.abt {
+  flex-basis: 25%;
+}
 .a {
   display: flex;
   flex-wrap: wrap;
 }
-.footer-column{
+.footer-column {
   flex-basis: 33.33%;
 }
-.footer{
+.faq-col {
+  flex-basis: 45%;
+}
+.footer {
   background-color: black;
   color: white;
 }
@@ -23,15 +37,15 @@
 .columns {
   flex-basis: 45%; /* Set initial width to 33.33% (one-third of the row) */
 }
-.column-curriculum{
-  flex-basis: 50%; 
+.column-curriculum {
+  flex-basis: 50%;
 }
 .b {
   flex-basis: 30%;
   background-color: lightgray;
   padding: 10px;
 }
-.logo{
+.logo {
   width: 300px;
 }
 .login-logo {
@@ -44,14 +58,33 @@ button.p-button.p-component.login-btn {
 .reg-card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.curriculum{
-  background-color: black ;
+.curriculum {
+  background-color: black;
 }
-@media (max-width:991px){
-  .getInTouch{
+@media (max-width: 380px) {
+  .abt {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 100%;
+  }
+}
+@media (max-width: 995px) {
+  .abt {
+    flex-basis: 50%;
+  }
+}
+@media (max-width: 991px) {
+  .getInTouch {
     display: none;
   }
-  .footer-column{
+  .footer-column {
+    flex-basis: 100%;
+  }
+  .faq {
+    display: none;
+  }
+  .faq-col {
     flex-basis: 100%;
   }
 }
@@ -63,10 +96,13 @@ button.p-button.p-component.login-btn {
   .columns {
     flex-basis: 100%;
   }
+  .placement {
+    margin-top: -50px;
+  }
 }
 
-@media (max-width:830px){
-  .column-curriculum{
+@media (max-width: 830px) {
+  .column-curriculum {
     flex-basis: 100%;
   }
 }
@@ -77,13 +113,12 @@ button.p-button.p-component.login-btn {
   }
   .login-logo {
     display: inline;
-    font-size:medium;
+    font-size: medium;
   }
-  .logo{
+  .logo {
     width: 250px;
   }
 }
-
 
 /* adding after copy */
 .admin-welcome {
@@ -116,11 +151,11 @@ button.p-button.p-component.login-btn {
   color: white;
 }
 
-.radius-start{
+.radius-start {
   border-radius: 6px 0px 0px 6px;
 }
 
-.radius-end{
+.radius-end {
   border-radius: 0px 6px 6px 0px;
 }
 
@@ -148,46 +183,45 @@ button.p-button.p-component.login-btn {
   color: orange;
 }
 
-.my-menu:hover{
+.my-menu:hover {
   background-color: orange;
-  }
+}
 .drop-content {
   display: none;
   position: absolute;
-   top: 140px;
+  top: 140px;
   margin-left: -11em;
 }
 
 .dropdown1:hover .drop-content {
-display: block;
+  display: block;
 }
 
 .drop-content2 {
-display: none;
-position: absolute;
- top: 400px;
-margin-left: -11em;
+  display: none;
+  position: absolute;
+  top: 400px;
+  margin-left: -11em;
 }
 
 .dropdown2:hover .drop-content2 {
-display: block;
+  display: block;
 }
 
-.my-margin{
+.my-margin {
   margin-left: 64px;
 }
-.hamb{
+.hamb {
   display: none;
 }
-.f-size{
+.f-size {
   font-size: 17px;
 }
-.logo{
+.logo {
   width: 300px;
 }
 
 /* popup css */
-
 
 .popup {
   position: fixed;
@@ -220,7 +254,6 @@ display: block;
   font-size: 20px;
 }
 
-
 .containers {
   display: flex;
   flex-wrap: wrap;
@@ -247,10 +280,9 @@ display: block;
     padding: 10px 15px;
     border-radius: 6px;
   }
-  .mm{
+  .mm {
     display: inline;
   }
-
 }
 
 @media (max-width: 834px) {
@@ -258,16 +290,16 @@ display: block;
     margin-left: 70px;
     width: 500px;
   }
-  .hamb{
+  .hamb {
     display: block;
   }
-  .vertical-nav{
+  .vertical-nav {
     display: none;
   }
-  .my-margin{
+  .my-margin {
     margin-left: 0;
   }
-  .f-size{
+  .f-size {
     font-size: 16px;
   }
 }
@@ -283,20 +315,20 @@ display: block;
     width: 380px;
     margin-left: 70px;
   }
-  .f-size{
+  .f-size {
     font-size: 13px;
   }
-  .logo{
+  .logo {
     width: 250px;
   }
 }
 @media (max-width: 468px) {
-  .logo{
+  .logo {
     width: 200px;
   }
 }
 @media (max-width: 415px) {
-  .logo{
+  .logo {
     width: 150px;
   }
 }

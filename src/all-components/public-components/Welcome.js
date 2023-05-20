@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WelcomeNavigation from "./WelcomeNavigation";
 import {
   Accordion,
@@ -59,8 +59,17 @@ import Django from "../../images/django.webp";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import { toast } from "react-toastify";
+import Validation from "./Validation";
 const Welcome = () => {
   const [open, setOpen] = useState("");
+
+  const [values, setValues] = useState({
+    mobileNumber: "",
+    name: "",
+    email: "",
+  });
+  const [errors, setErrors] = useState({});
+
   const toggle = (id) => {
     if (open === id) {
       setOpen();
@@ -69,10 +78,10 @@ const Welcome = () => {
     }
   };
 
-  const submitForm=(e)=>{
+  const submitForm = (e) => {
     e.preventDefault();
-    toast.success("Submited..Our Team Contact Soon..");
-  }
+    setErrors(Validation(values));
+  };
   return (
     <div>
       <WelcomeNavigation
@@ -135,11 +144,15 @@ const Welcome = () => {
                 <i className="fa-sharp fa-solid fa-rectangle-list"></i>
               </Button>
               &nbsp;
-             <Link to="https://www.youtube.com/watch?v=od4hT9abIMQ" target="_blank" className="text-decoration-none">
-             <Button color="warning" className="my-2">
-                Course Intro&nbsp;<i className="fa-solid fa-video"></i>
-              </Button>
-             </Link>
+              <Link
+                to="https://www.youtube.com/watch?v=od4hT9abIMQ"
+                target="_blank"
+                className="text-decoration-none"
+              >
+                <Button color="warning" className="my-2">
+                  Course Intro&nbsp;<i className="fa-solid fa-video"></i>
+                </Button>
+              </Link>
             </Container>
           </div>
           <br />
@@ -151,37 +164,80 @@ const Welcome = () => {
               <h4>Let's connect. We are just a click away!</h4>
               <div>
                 <div className="reg-input">
-                  <Form onSubmit={submitForm}>
-                    <p style={{ textAlign: "left" }}>Mobile Number</p>
-                    <InputGroup>
+                  <Form id="form" onSubmit={submitForm}>
+                    <br />
+                    {/* <p style={{ textAlign: "left" }}>Mobile Number</p> */}
+                    <InputGroup className="">
                       <InputGroupText>+91</InputGroupText>
                       <Input
                         type="tel"
-                        id="mobile-no"
-                        name="mobile-no"
-                        placeholder="Enter 10 digit Mobile Number"
+                        id="mobileNumber"
+                        name="mobileNumber"
                         required
+                        placeholder="Enter 10 digit Mobile Number"
+                        onChange={(e) => {
+                          setValues({
+                            ...values,
+                            mobileNumber: e.target.value,
+                          });
+                        }}
                       />
                     </InputGroup>
+                    {errors.mobileNumber && (
+                      <p
+                        style={{ color: "red", textAlign: "left", margin: "0" }}
+                      >
+                        {errors.mobileNumber}
+                      </p>
+                    )}
+                    <br />
                     <FormGroup>
-                      <p style={{ textAlign: "left" }}>Full Name</p>
+                      {/* <p style={{ textAlign: "left" }}>Full Name</p> */}
                       <Input
                         type="text"
-                        id="full-name"
-                        name="full-name"
+                        id="name"
+                        name="name"
                         placeholder="Your Name"
                         required
+                        onChange={(e) => {
+                          setValues({ ...values, name: e.target.value });
+                        }}
                       />
+                      {errors.name && (
+                        <p
+                          style={{
+                            color: "red",
+                            textAlign: "left",
+                            margin: "0",
+                          }}
+                        >
+                          {errors.name}
+                        </p>
+                      )}
                     </FormGroup>
                     <FormGroup>
-                      <p style={{ textAlign: "left" }}>Email</p>
+                      {/* <p style={{ textAlign: "left" }}>Email</p> */}
                       <Input
                         type="email"
                         id="email"
                         name="email"
-                        placeholder="e.g. yourname@gmail.com"
                         required
+                        placeholder="e.g. yourname@gmail.com"
+                        onChange={(e) => {
+                          setValues({ ...values, email: e.target.value });
+                        }}
                       />
+                      {errors.email && (
+                        <p
+                          style={{
+                            color: "red",
+                            textAlign: "left",
+                            margin: "0",
+                          }}
+                        >
+                          {errors.email}
+                        </p>
+                      )}
                     </FormGroup>
                     <Button className="w-100" type="submit" color="success">
                       Submit&nbsp;<i className="fa-solid fa-paper-plane"></i>
@@ -1450,27 +1506,52 @@ const Welcome = () => {
           <div className="container-fluid h-custom">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <Form onSubmit={submitForm}>
+                <Form id="form1" onSubmit={submitForm}>
                   <p style={{ textAlign: "left" }}>Mobile Number</p>
                   <InputGroup>
                     <InputGroupText>+91</InputGroupText>
                     <Input
                       type="tel"
-                      id="mobile-no"
-                      name="mobile-no"
+                      id="mobileNumber"
+                      name="mobileNumber"
                       placeholder="Enter 10 digit Mobile Number"
                       required
+                      onChange={(e) => {
+                        setValues({
+                          ...values,
+                          mobileNumber: e.target.value,
+                        });
+                      }}
                     />
                   </InputGroup>
+                  {errors.mobileNumber && (
+                    <p style={{ color: "red", textAlign: "left", margin: "0" }}>
+                      {errors.mobileNumber}
+                    </p>
+                  )}
                   <FormGroup>
                     <p style={{ textAlign: "left" }}>Full Name</p>
                     <Input
                       type="text"
-                      id="full-name"
-                      name="full-name"
+                      id="name"
+                      name="name"
                       placeholder="Your Name"
                       required
+                      onChange={(e) => {
+                        setValues({ ...values, name: e.target.value });
+                      }}
                     />
+                    {errors.name && (
+                      <p
+                        style={{
+                          color: "red",
+                          textAlign: "left",
+                          margin: "0",
+                        }}
+                      >
+                        {errors.name}
+                      </p>
+                    )}
                   </FormGroup>
                   <FormGroup>
                     <p style={{ textAlign: "left" }}>Email</p>
@@ -1480,7 +1561,21 @@ const Welcome = () => {
                       name="email"
                       placeholder="e.g. yourname@gmail.com"
                       required
+                      onChange={(e) => {
+                        setValues({ ...values, email: e.target.value });
+                      }}
                     />
+                    {errors.email && (
+                      <p
+                        style={{
+                          color: "red",
+                          textAlign: "left",
+                          margin: "0",
+                        }}
+                      >
+                        {errors.email}
+                      </p>
+                    )}
                   </FormGroup>
                   <Button className="w-100" type="submit" color="success">
                     Submit&nbsp;<i className="fa-solid fa-paper-plane"></i>
@@ -1556,7 +1651,10 @@ const Welcome = () => {
               <li style={{ color: "gray" }}>QUICK LINKS</li>
               <br />
               <li>
-                <Link to="#" className="text-light text-decoration-none">
+                <Link
+                  to="/placements"
+                  className="text-light text-decoration-none"
+                >
                   Placements
                 </Link>
               </li>

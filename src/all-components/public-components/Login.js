@@ -19,7 +19,6 @@ const Login = () => {
   const validateDetails = (username, password) => {
     axios.post(`${base_url}/login`, { username, password }).then(
       (response) => {
-        console.log(response.data.post);
         const post = response.data.post;
         if (post === "admin") {
           naviate("/admin-home");

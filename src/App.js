@@ -16,6 +16,7 @@ import PayrollReport from './all-components/admin-module/reports/PayrollReport';
 import MoreDetails from './all-components/admin-module/employee/MoreDetails';
 import SetTarget from './all-components/admin-module/employee/SetTarget';
 import NoticeHome from './all-components/admin-module/notice/NoticeHome';
+import Placements from './all-components/public-components/Placements';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path='/report/payroll-report' element={<PayrollReport />}/>
             <Route path='/more-details/:emp_id' element={<MoreDetails />}/>
             <Route path='/set-target/:emp_id' element={<SetTarget />}/>
+            <Route path='/placements' element={<Placements />}/>
           </Routes>
         </BrowserRouter>
   );
