@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WelcomeNavigation from "./WelcomeNavigation";
 import { Dialog } from "primereact/dialog";
 import {
   Button,
   Card,
   CardText,
-  Col,
   Container,
   Form,
   Input,
   InputGroup,
   InputGroupText,
-  Row,
   Accordion,
   AccordionBody,
   AccordionHeader,
   AccordionItem,
   FormGroup,
-  Label,
-  List,
 } from "reactstrap";
-import Logo from "../../images/logo.png";
 import { Avatar } from "primereact/avatar";
 import Candidate from "../../images/candidate.svg";
 import Learning from "../../images/learning.svg";
@@ -46,12 +41,11 @@ import IDFC from "../../images/idfc.webp";
 import Tejas from "../../images/tejas-gire.webp";
 import Basai from "../../images/basal-analytics.webp";
 import Career from "../../images/career.png";
-import { toast } from "react-toastify";
 import FAQ from "../../images/faq.png";
 import Placement from "../../images/placement-vector.png";
-import { Link } from "react-router-dom";
-import { Image } from "react-bootstrap";
 import Footer from "./Footer";
+import MenuFooter from "./MenuFooter";
+import { toast } from "react-toastify";
 const Placements = () => {
   const [open, setOpen] = useState("");
   const toggle = (id) => {
@@ -61,11 +55,94 @@ const Placements = () => {
       setOpen(id);
     }
   };
+  const [values, setValues] = useState({ mobileNumber: "" });
+  const [errors, setErrors] = useState({});
   const [visible, setVisible] = useState(false);
+
+  const [formError, setFormError] = useState({});
+  const [formValues, setFormValues] = useState({
+    mobileNumber: "",
+    name: "",
+    companyName: "",
+    email: "",
+    designation: "",
+    interest: "",
+  });
+  const validate = (values) => {
+    const errors = {};
+    const mobileNumber_pattern = /^\d{10}$/;
+
+    if (values.mobileNumber === "") {
+      errors.mobileNumber = "Mobile Number is Required!";
+    } else if (!mobileNumber_pattern.test(values.mobileNumber)) {
+      errors.mobileNumber = "Mobile Number is not correct";
+      // console.log("went")
+    }
+    setErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      toast.error("Enter Valid Inputs");
+    } else {
+      toast.success("Form submitted successfully! We'll be in touch soon.");
+      document.getElementById("form").reset();
+      setVisible(false);
+      setValues({mobileNumber: ""});
+    }
+    return errors;
+  };
+  const validateForm = (formValues) => {
+    const formError = {};
+    const mobileNumber_pattern = /^\d{10}$/;
+    const email_pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
+
+    if (formValues.mobileNumber === "") {
+      formError.mobileNumber = "Mobile Number is Required!";
+    } else if (!mobileNumber_pattern.test(formValues.mobileNumber)) {
+      formError.mobileNumber = "Mobile Number is not correct";
+      // console.log("went")
+    }
+    if (formValues.email === "") {
+      formError.email = "Email is Required!";
+    } else if (!email_pattern.test(formValues.email)) {
+      formError.email = "Email is Not Correct";
+    }
+    if (formValues.name === "") {
+      formError.name = "Name is Required!";
+    }
+    if (formValues.companyName === "") {
+      formError.companyName = "Company Name is Required!";
+    }
+    if (formValues.designation === "") {
+      formError.designation = "Designation is Required!";
+    }
+    if (formValues.interest === "") {
+      formError.interest = "Interest is Required!";
+    }
+    setFormError(formError);
+    if (Object.keys(formError).length > 0) {
+      toast.error("Enter Valid Inputs");
+    } else {
+      toast.success("Form submitted successfully! We'll be in touch soon.");
+      document.getElementById("form1").reset();
+      setFormValues({
+        mobileNumber: "",
+        name: "",
+        companyName: "",
+        email: "",
+        designation: "",
+        interest: "",
+      });
+    }
+    return formError;
+  };
   const submitMobileNumber = (e) => {
     e.preventDefault();
-    setVisible(false);
-    toast.success("Submited....");
+    validate(values);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    validateForm(formValues);
+    console.log(formValues);
   };
   const currentDate = new Date(); // Get the current date
 
@@ -78,9 +155,13 @@ const Placements = () => {
   const formattedDate = `${day} ${month} ${year}`;
 
   return (
-    <div>
+    <div id="placement">
       <WelcomeNavigation url="/login" btnName="Login" class="fa-backward" />
-      <div className="main-container" style={{ backgroundColor: "#f1f1f1" }}>
+      <div
+        id="m"
+        className="main-container"
+        style={{ backgroundColor: "#f1f1f1" }}
+      >
         {/* <CardBody> */}
         <div className="columns text-center my-5">
           <h1 className="course-para">
@@ -125,7 +206,7 @@ const Placements = () => {
             onHide={() => setVisible(false)}
           >
             <Container>
-              <Form onSubmit={submitMobileNumber}>
+              <Form id="form" onSubmit={submitMobileNumber}>
                 <p>Mobile Number</p>
                 <InputGroup>
                   <InputGroupText>+91</InputGroupText>
@@ -134,9 +215,16 @@ const Placements = () => {
                     id="mobile-no"
                     name="mobile-no"
                     placeholder="Enter 10 digit Mobile Number"
-                    required
+                    onChange={(e) => {
+                      setValues({ mobileNumber: e.target.value });
+                    }}
                   />
                 </InputGroup>
+                {errors.mobileNumber && (
+                  <p style={{ color: "red", textAlign: "left", margin: "0" }}>
+                    {errors.mobileNumber}
+                  </p>
+                )}
                 <Container>
                   <Button className="w-100 my-4" type="submit" color="success">
                     Submit&nbsp;<i className="fa-solid fa-paper-plane"></i>
@@ -167,7 +255,12 @@ const Placements = () => {
               designations who were hired include Python and Java Developers.
               The highest package was upto 5Lac
               <Container className="text-center">
-                <Button color="primary" outline className="w-50 my-4">
+                <Button
+                  color="primary"
+                  onClick={() => setVisible(true)}
+                  outline
+                  className="w-50 my-4"
+                >
                   Join Now
                 </Button>
               </Container>
@@ -662,7 +755,7 @@ const Placements = () => {
           <div className="container-fluid h-custom">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <Form>
+                <Form id="form1" onSubmit={handleFormSubmit}>
                   <p style={{ textAlign: "left" }}>Mobile Number</p>
                   <InputGroup>
                     <InputGroupText>+91</InputGroupText>
@@ -671,16 +764,37 @@ const Placements = () => {
                       id="mobile-no"
                       name="mobile-no"
                       placeholder="Enter 10 digit Mobile Number"
-                      required
+                      // required
+                      onChange={(e) => {
+                        setFormValues({
+                          ...formValues,
+                          mobileNumber: e.target.value,
+                        });
+                      }}
                     />
                   </InputGroup>
+                  {formError.mobileNumber && (
+                    <p style={{ color: "red", textAlign: "left", margin: "0" }}>
+                      {formError.mobileNumber}
+                    </p>
+                  )}
                   <FormGroup>
                     <p style={{ textAlign: "left" }}>Full Name</p>
                     <Input
                       type="text"
                       name="fullName"
                       placeholder="Full Name"
+                      onChange={(e) => {
+                        setFormValues({ ...formValues, name: e.target.value });
+                      }}
                     />
+                    {formError.name && (
+                      <p
+                        style={{ color: "red", textAlign: "left", margin: "0" }}
+                      >
+                        {formError.name}
+                      </p>
+                    )}
                   </FormGroup>
                   <FormGroup>
                     <p style={{ textAlign: "left" }}>Company Name</p>
@@ -688,7 +802,20 @@ const Placements = () => {
                       type="text"
                       name="companyName"
                       placeholder="e.g google inc."
+                      onChange={(e) => {
+                        setFormValues({
+                          ...formValues,
+                          companyName: e.target.value,
+                        });
+                      }}
                     />
+                    {formError.companyName && (
+                      <p
+                        style={{ color: "red", textAlign: "left", margin: "0" }}
+                      >
+                        {formError.companyName}
+                      </p>
+                    )}
                   </FormGroup>
                   <FormGroup>
                     <p style={{ textAlign: "left" }}>Email</p>
@@ -696,23 +823,72 @@ const Placements = () => {
                       type="email"
                       name="email"
                       placeholder="e.g yourname@gmail.com"
+                      onChange={(e) => {
+                        setFormValues({ ...formValues, email: e.target.value });
+                      }}
                     />
+                    {formError.email && (
+                      <p
+                        style={{ color: "red", textAlign: "left", margin: "0" }}
+                      >
+                        {formError.email}
+                      </p>
+                    )}
                   </FormGroup>
                   <FormGroup>
                     <p style={{ textAlign: "left" }}>Your Designation</p>
-                    <Input type="text" placeholder="e.g HR" />
+                    <Input
+                      type="text"
+                      placeholder="e.g HR"
+                      onChange={(e) => {
+                        setFormValues({
+                          ...formValues,
+                          designation: e.target.value,
+                        });
+                      }}
+                    />
+                    {formError.designation && (
+                      <p
+                        style={{ color: "red", textAlign: "left", margin: "0" }}
+                      >
+                        {formError.designation}
+                      </p>
+                    )}
                   </FormGroup>
                   <FormGroup>
-                    <p style={{ textAlign: "left" }}>Email</p>
-                    <Input type="select">
+                    <p style={{ textAlign: "left" }}>Your looking for:</p>
+                    <Input
+                      type="select"
+                      onChange={(e) => {
+                        setFormValues({
+                          ...formValues,
+                          interest: e.target.value,
+                        });
+                      }}
+                    >
                       <option>Select Your Interest</option>
-                      <option>Trainer</option>
-                      <option>Counsellor</option>
-                      <option>Digital Marketing</option>
-                      <option>HR</option>
+                      <option value="trainer">Trainer</option>
+                      <option value="counsellor">Counsellor</option>
+                      <option value="dm">Digital Marketing</option>
+                      <option value="hr">HR</option>
                     </Input>
+                    {formError.interest && (
+                      <p
+                        style={{ color: "red", textAlign: "left", margin: "0" }}
+                      >
+                        {formError.interest}
+                      </p>
+                    )}
                   </FormGroup>
-                  <Button className="w-100" type="submit" color="success">
+                  <Button
+                    className="w-100"
+                    type="submit"
+                    style={{
+                      backgroundColor: "#b9d719",
+                      borderColor: "#b9d719",
+                      color: "black",
+                    }}
+                  >
                     Submit&nbsp;<i className="fa-solid fa-paper-plane"></i>
                   </Button>
                 </Form>
@@ -732,167 +908,9 @@ const Placements = () => {
         </Container>
       </div>
       <br />
-      <br />
-      {/* footer window */}
-      <div className="main-container footer">
-        <div className="footer-column">
-          <Container>
-            <Image src={Logo} alt="logo" width="300" />
-            <hr />
-            <List type="unstyled">
-              <li>ADDRESS : Future Scope Technology Pvt. Ltd.</li>
-              <br />
-              <li>
-                2nd floor Pisal Building Bazartal, Karjat, Ahmednagar 414402
-              </li>
-              <br />
-              <li style={{ color: "gray" }}>EMAIL ID:</li>
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  futurescopeinstitute.info@gmail.com
-                </Link>
-              </li>
-              <br />
-              <li style={{ color: "gray" }}>FOR COURSE CONTACT NUMBER:</li>
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  +91-9284465209
-                </Link>
-              </li>
-              <br />
-              <li style={{ color: "gray" }}>FOLLOW US ON :</li>
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-instagram"></i>&nbsp;
-                </Link>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-facebook"></i>&nbsp;
-                </Link>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-whatsapp"></i>&nbsp;
-                </Link>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-linkedin"></i>&nbsp;
-                </Link>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-youtube"></i>&nbsp;
-                </Link>
-              </li>
-            </List>
-          </Container>
-        </div>
-        <div className="footer-column">
-          <Container>
-            <h1>Menu</h1>
-            <hr />
-            <List type="unstyled">
-              <li style={{ color: "gray" }}>QUICK LINKS</li>
-              <br />
-              <li>
-                <Link
-                  to="/placements"
-                  className="text-light text-decoration-none"
-                >
-                  Placements
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Career
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Pay Fees
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Refer & Earn
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Success Strories
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Corporate Training
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Contact us
-                </Link>
-              </li>
-              <br />
-            </List>
-          </Container>
-        </div>
-        <div className="footer-column">
-          <Container>
-            <h1>Our Courses</h1>
-            <hr />
-            <List type="unstyled">
-              <li>JOB GUARANTEE COURSES</li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Full Stack Development
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Data Science & Analytics with AI
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  AWS Cloud Technology
-                </Link>
-              </li>
-              <br />
-              <li style={{ color: "gray" }}>JOB ASSISTANCE COURSES</li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Machine Learning & AI
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Data Science
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Data Analytics
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Python Development
-                </Link>
-              </li>
-              <br />
-            </List>
-          </Container>
-        </div>
-      </div>
       <div>
-        <Footer/>
+        <MenuFooter />
+        <Footer />
       </div>
     </div>
   );

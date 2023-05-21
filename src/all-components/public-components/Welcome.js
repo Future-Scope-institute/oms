@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WelcomeNavigation from "./WelcomeNavigation";
 import {
   Accordion,
@@ -20,7 +20,6 @@ import {
   List,
   Row,
 } from "reactstrap";
-import Logo from "../../images/logo.png";
 import GetInTouch from "../../images/draw.webp";
 import Square from "../../images/g-square.png";
 import { Divider } from "primereact/divider";
@@ -58,18 +57,53 @@ import CSS from "../../images/css.webp";
 import Django from "../../images/django.webp";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
+import MenuFooter from "./MenuFooter";
 import { toast } from "react-toastify";
-import Validation from "./Validation";
 const Welcome = () => {
   const [open, setOpen] = useState("");
-
   const [values, setValues] = useState({
     mobileNumber: "",
     name: "",
     email: "",
   });
   const [errors, setErrors] = useState({});
+  const Validation = (values) => {
+    const errors = {};
 
+    const mobileNumber_pattern = /^\d{10}$/;
+    const name_pattern = /^[a-zA-Z\s]+$/;
+    //   const email_pattern =/^[^\s@]+@[^\s@]+\.[^\s@]{2}$/;
+    const email_pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
+    //name
+    if (values.name === "") {
+      errors.name = "Name is Required!";
+    } else if (!name_pattern.test(values.name)) {
+      errors.name = "Name is not correct";
+    }
+    //email
+    if (values.email === "") {
+      errors.email = "Email is Required!";
+    } else if (!email_pattern.test(values.email)) {
+      errors.email = "Email is not correct";
+    }
+    //mobile number
+    if (values.mobileNumber === "") {
+      errors.mobileNumber = "Mobile Number is Required!";
+    } else if (!mobileNumber_pattern.test(values.mobileNumber)) {
+      errors.mobileNumber = "Mobile Number is not correct";
+    }
+
+    setErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      toast.error("Enter Valid Inputs");
+    } else {
+      toast.success("Form submitted successfully! We'll be in touch soon.");
+      document.getElementById("form").reset();
+      document.getElementById("form1").reset();
+      setValues({ mobileNumber: "", name: "", email: "" });
+    }
+  };
   const toggle = (id) => {
     if (open === id) {
       setOpen();
@@ -80,7 +114,7 @@ const Welcome = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    setErrors(Validation(values));
+    Validation(values);
   };
   return (
     <div>
@@ -166,14 +200,15 @@ const Welcome = () => {
                 <div className="reg-input">
                   <Form id="form" onSubmit={submitForm}>
                     <br />
-                    {/* <p style={{ textAlign: "left" }}>Mobile Number</p> */}
+                    <p style={{ textAlign: "left", lineHeight: "0" }}>
+                      Mobile Number
+                    </p>
                     <InputGroup className="">
                       <InputGroupText>+91</InputGroupText>
                       <Input
                         type="tel"
                         id="mobileNumber"
                         name="mobileNumber"
-                        required
                         placeholder="Enter 10 digit Mobile Number"
                         onChange={(e) => {
                           setValues({
@@ -192,13 +227,14 @@ const Welcome = () => {
                     )}
                     <br />
                     <FormGroup>
-                      {/* <p style={{ textAlign: "left" }}>Full Name</p> */}
+                      <p style={{ textAlign: "left", lineHeight: "0" }}>
+                        Full Name
+                      </p>
                       <Input
                         type="text"
                         id="name"
                         name="name"
                         placeholder="Your Name"
-                        required
                         onChange={(e) => {
                           setValues({ ...values, name: e.target.value });
                         }}
@@ -216,12 +252,13 @@ const Welcome = () => {
                       )}
                     </FormGroup>
                     <FormGroup>
-                      {/* <p style={{ textAlign: "left" }}>Email</p> */}
+                      <p style={{ textAlign: "left", lineHeight: "0" }}>
+                        Email
+                      </p>
                       <Input
                         type="email"
                         id="email"
                         name="email"
-                        required
                         placeholder="e.g. yourname@gmail.com"
                         onChange={(e) => {
                           setValues({ ...values, email: e.target.value });
@@ -1515,7 +1552,6 @@ const Welcome = () => {
                       id="mobileNumber"
                       name="mobileNumber"
                       placeholder="Enter 10 digit Mobile Number"
-                      required
                       onChange={(e) => {
                         setValues({
                           ...values,
@@ -1536,7 +1572,6 @@ const Welcome = () => {
                       id="name"
                       name="name"
                       placeholder="Your Name"
-                      required
                       onChange={(e) => {
                         setValues({ ...values, name: e.target.value });
                       }}
@@ -1560,7 +1595,6 @@ const Welcome = () => {
                       id="email"
                       name="email"
                       placeholder="e.g. yourname@gmail.com"
-                      required
                       onChange={(e) => {
                         setValues({ ...values, email: e.target.value });
                       }}
@@ -1595,165 +1629,10 @@ const Welcome = () => {
       </div>
       <br />
       <br />
-      {/* footer window */}
-      <div className="main-container footer">
-        <div className="footer-column">
-          <Container>
-            <Image src={Logo} alt="logo" width="300" />
-            <hr />
-            <List type="unstyled">
-              <li>ADDRESS : Future Scope Technology Pvt. Ltd.</li>
-              <br />
-              <li>
-                2nd floor Pisal Building Bazartal, Karjat, Ahmednagar 414402
-              </li>
-              <br />
-              <li style={{ color: "gray" }}>EMAIL ID:</li>
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  futurescopeinstitute.info@gmail.com
-                </Link>
-              </li>
-              <br />
-              <li style={{ color: "gray" }}>FOR COURSE CONTACT NUMBER:</li>
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  +91-9284465209
-                </Link>
-              </li>
-              <br />
-              <li style={{ color: "gray" }}>FOLLOW US ON :</li>
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-instagram"></i>&nbsp;
-                </Link>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-facebook"></i>&nbsp;
-                </Link>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-whatsapp"></i>&nbsp;
-                </Link>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-linkedin"></i>&nbsp;
-                </Link>
-                <Link to="#" className="text-light text-decoration-none">
-                  &nbsp;<i class="fa-brands fa-youtube"></i>&nbsp;
-                </Link>
-              </li>
-            </List>
-          </Container>
-        </div>
-        <div className="footer-column">
-          <Container>
-            <h1>Menu</h1>
-            <hr />
-            <List type="unstyled">
-              <li style={{ color: "gray" }}>QUICK LINKS</li>
-              <br />
-              <li>
-                <Link
-                  to="/placements"
-                  className="text-light text-decoration-none"
-                >
-                  Placements
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Career
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Pay Fees
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Refer & Earn
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Success Strories
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Corporate Training
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Contact us
-                </Link>
-              </li>
-              <br />
-            </List>
-          </Container>
-        </div>
-        <div className="footer-column">
-          <Container>
-            <h1>Our Courses</h1>
-            <hr />
-            <List type="unstyled">
-              <li>JOB GUARANTEE COURSES</li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Full Stack Development
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Data Science & Analytics with AI
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  AWS Cloud Technology
-                </Link>
-              </li>
-              <br />
-              <li style={{ color: "gray" }}>JOB ASSISTANCE COURSES</li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Machine Learning & AI
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Data Science
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Data Analytics
-                </Link>
-              </li>
-              <br />
-              <li>
-                <Link to="#" className="text-light text-decoration-none">
-                  Python Development
-                </Link>
-              </li>
-              <br />
-            </List>
-          </Container>
-        </div>
+      <div>
+        <MenuFooter />
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };

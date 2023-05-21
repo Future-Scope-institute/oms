@@ -19,6 +19,9 @@
 .abt {
   flex-basis: 25%;
 }
+.frame{
+  flex-basis: 50%;
+}
 .a {
   display: flex;
   flex-wrap: wrap;
@@ -72,6 +75,12 @@ button.p-button.p-component.login-btn {
 @media (max-width: 995px) {
   .abt {
     flex-basis: 50%;
+  }
+  .frame{
+    flex-basis: 100%;
+  }
+  .frame-img{
+    display: none;
   }
 }
 @media (max-width: 991px) {
