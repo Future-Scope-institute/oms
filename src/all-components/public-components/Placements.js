@@ -142,7 +142,6 @@ const Placements = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     validateForm(formValues);
-    console.log(formValues);
   };
   const currentDate = new Date(); // Get the current date
 
